@@ -109,7 +109,7 @@ void setup() {
 
   //ČEKA DODIR DA ODREDI VRIJEDNOST KOJU HALL EFEKT SENZOR VIDI KADA SU VRATA ZATVORENA
   dodir = false; //ako smo slučajno dotakli dugme nakon paljenja stavimo dodir na false
-  Serial.println("Zatvorite vrata i dotaknte dugme");
+  Serial.println("Zatvorite vrata i dotaknte dugme \n(pin D4 reagira na touch)");
   while(!dodir){delay(1);} //čekaj dodir
   trepni(1, 330); //trepni da pokažeš da je dodir registriran;
   dodir = false; //resetiraj dodir
@@ -158,6 +158,9 @@ void setup() {
     //ako nismo pogriješili u postavljanju, onda bi trebali uzeti jači magnet ili približiti ovaj magnet ESPu
   }
 
+  Serial.println("ESP osjeti dovoljno veliku razliku između otvorenih i zatvorenih vrata");
+  Serial.println("ESP sada ulazi u loop() funkciju gdje će pokazivati s lampicom kada osjeti da su vrata zatvorena");
+
   dozvoljena_greska = abs(prosjek_otvorenih - prosjek_zatvorenih) - ukupno_odstupanje;
   //setup je završen i ulazimo u loop
 }
@@ -175,11 +178,13 @@ void loop()
 {
   if (vrata_zatvorena())
   {
+    Serial.println("Vrata ZATVORENA");
     digitalWrite(ledica, HIGH);
     //digitalWrite(5, LOW); //gasi buzzer
   }
   else
   {
+    Serial.println("Vrata OTVORENA");
     digitalWrite(ledica, LOW);
     //digitalWrite(5, HIGH); //pali buzzer
   }

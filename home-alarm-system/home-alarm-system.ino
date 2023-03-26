@@ -14,6 +14,7 @@ const int DODIR_PIN = 4;
 const int DODIR_GRANICA = 40;
 const int LED_PIN = 2;
 const int DEBOUNCE_DELAY = 100; // Debounce delay in milliseconds
+const int BUZZER_PIN = 13;
 
 // Globalne variable
 bool dodir = false;
@@ -143,8 +144,20 @@ void sendMessage(String message) {
   http.end();
 }
 
+void svirajAlarm()
+{
+  for (int i = 0; i < 3; i++)
+  {
+    digitalWrite(BUZZER_PIN, HIGH);
+    delay(100);
+    digitalWrite(BUZZER_PIN, LOW);
+    delay(100);
+  }
+}
+
 
 void alarm() {
+  svirajAlarm();
   sendMessage("ULJEZ");
 }
 
@@ -163,6 +176,7 @@ void podesiWifi()
 
 void setup() {
   pinMode(LED_PIN, OUTPUT);
+  pinMode(BUZZER_PIN, OUTPUT);
   touchAttachInterrupt(DODIR_PIN, zabiljezi_dodir, DODIR_GRANICA);
   Serial.begin(115200);
 
